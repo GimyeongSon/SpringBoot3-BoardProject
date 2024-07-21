@@ -1,9 +1,12 @@
 package com.springbooot.boardproject.dto;
 
 import com.springbooot.boardproject.entity.Member;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.ToString;
 
-@Data
+@AllArgsConstructor
+@ToString
 public class MemberForm {
     private String email;
     private String password;

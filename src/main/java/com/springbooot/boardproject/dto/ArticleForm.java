@@ -1,9 +1,12 @@
 package com.springbooot.boardproject.dto;
 
 import com.springbooot.boardproject.entity.Article;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.ToString;
 
-@Data
+@AllArgsConstructor
+@ToString
 public class ArticleForm {
     private String title;
     private String content;
