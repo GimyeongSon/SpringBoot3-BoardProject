@@ -30,9 +30,24 @@ public class MemberController {
         log.info(member.toString());
         Member saved = memberRepository.save(member);
         log.info(saved);
-        return "redirect:members/" + saved.getId();
+        return "redirect:/members/" + saved.getId();
     }
 
+    @GetMapping("/members/{id}/edit")
+    public String edit(@PathVariable Long id, Model model){
+        Member memberEntity = memberRepository.findById(id).orElse(null);
+        model.addAttribute("member", memberEntity);
+        return "members/edit";
+    }
+    @PostMapping("/members/update")
+    public String update(MemberForm memberForm){
+        Member memberEntity = memberForm.toEntity();
+        Member target = memberRepository.findById(memberEntity.getId()).orElse(null);
+        if(target != null){
+            memberRepository.save(memberEntity);
+        }
+        return "redirect:/members/" + memberEntity.getId();
+    }
     @GetMapping("/members/{id}")
     public String show(@PathVariable Long id, Model model){
         Member member = memberRepository.findById(id).orElse(null);
