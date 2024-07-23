@@ -1,6 +1,7 @@
 package com.springbooot.boardproject.service;
 
 import com.springbooot.boardproject.dto.CommentDto;
+import com.springbooot.boardproject.entity.Article;
 import com.springbooot.boardproject.entity.Comment;
 import com.springbooot.boardproject.repository.ArticleRepository;
 import com.springbooot.boardproject.repository.CommentRepository;
@@ -25,5 +26,14 @@ public class CommentService {
                 .stream()
                 .map(CommentDto::createCommentDto)
                 .collect(Collectors.toList());
+    }
+
+    public CommentDto create(Long articleId, CommentDto dto) {
+        Article article = articleRepository.findById(articleId)
+                .orElseThrow(() -> new IllegalArgumentException("댓글 생성 실패! " +
+                        "대상 게시글이 없습니다."));
+        Comment comment = Comment.createComment(dto, article);
+        Comment created = commentRepository.save(comment);
+        return CommentDto.createCommentDto(created);
     }
 }
