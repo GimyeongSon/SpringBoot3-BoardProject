@@ -18,49 +18,35 @@
 </div>
 <script>
     {
+        // 댓글 생성 버튼 변수화
         const commentCreateBtn = document.querySelector("#comment-create-btn");
-        commentCreateBtn.addEventListener("click", function(){
+        // 댓글 클릭 이벤트 감지
+        commentCreateBtn.addEventListener("click", function() {
+            // 새 댓글 객체 생성
             const comment = {
+                // 새 댓글의 닉네임
                 nickname: document.querySelector("#new-comment-nickname").value,
+                // 새 댓글의 본문
                 body: document.querySelector("#new-comment-body").value,
+                // 부모 게시글의 id
                 articleId: document.querySelector("#new-comment-article-id").value
             };
-            console.log(comment);
+            // 댓글 객체 출력
+            console.log(comment);// fetch() - 비동기 통신을 위한 API
             const url = "/api/articles/" + comment.articleId + "/comments";
             fetch(url, {
-               method: "POST",
-               headers : {
+                method: "POST", // POST 요청
+                headers: { // 전송 본문의 데이터 타입(JSON) 정보
                     "Content-Type": "application/json"
-               },
-                body: JSON.stringify(comment)
+                },
+                body: JSON.stringify(comment) //comment 객체를 JSON 문자열로 변환해 전송
             }).then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    alert("댓글 등록 실패..!");
-                    throw new Error("댓글 등록 실패");
-                }
-            }).then(newComment => {
-                // 댓글 목록에 새 댓글을 추가합니다.
-                const commentsList = document.querySelector("#comments-list");
-                const commentDiv = document.createElement("div");
-                commentDiv.className = "card m-2";
-                commentDiv.id = "comments-{{id}}";
-                commentDiv.innerHTML = `
-                    <div class="card-header">
-                        ${newComment.nickname}
-                    </div>
-                    <div class="card-body">
-                        ${newComment.body}
-                    </div>
-            `;
-                commentsList.prepend(commentDiv); // 새 댓글을 목록의 맨 위에 추가합니다.
-
-                // 입력 필드 초기화
-                document.querySelector("#new-comment-nickname").value = "";
-                document.querySelector("#new-comment-body").value = "";
-                alert("댓글이 등록됐습니다.");
-            }).catch(error => console.error("Error:", error));
+                // HTTP 응답 코드에 따른 메시지 출력
+                const msg = (response.ok) ? "댓글이 등록됐습니다." : "댓글 등록 실패..!";
+                alert(msg);
+                // 현재 페이지 새로 고침
+                window.location.reload();
+            });
         });
     }
 </script>
