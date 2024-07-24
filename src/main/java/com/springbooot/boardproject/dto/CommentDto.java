@@ -1,5 +1,6 @@
 package com.springbooot.boardproject.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.springbooot.boardproject.entity.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import lombok.ToString;
 @ToString
 public class CommentDto {
     private Long id;
+    @JsonProperty("article_id")
     private Long articleId;
     private String nickname;
     private String body;

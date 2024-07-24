@@ -20,4 +20,9 @@
 <a href="/articles/{{article.id}}/edit" class="btn btn-primary">Edit</a>
 <a href="/articles/{{article.id}}/delete" class="btn btn-primary">Delete</a>
 <a href="/articles" class="btn btn-info">Go to Article List</a>
+
+<div>
+    {{>comments/_comments}}
+    {{>comments/_new}}
+</div>
 {{>layouts/footer}}

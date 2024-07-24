@@ -20,7 +20,6 @@ import java.util.List;
 public class ArticleApiController {
     private final ArticleService articleService;
 
-
     //GET
     @GetMapping("/api/articles")
     public List<Article> index(){
@@ -28,6 +27,7 @@ public class ArticleApiController {
     }
     @GetMapping("/api/articles/{id}")
     public Article show(@PathVariable Long id){
+
         return articleService.show(id);
     }
     //POST
