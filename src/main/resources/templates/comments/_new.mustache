@@ -1,0 +1,66 @@
+<div class="card m-2" id="comments-new">
+    <div class="card-body">
+        <form>
+            <div class="mb-3">
+                <label class="form-label">닉네임</label>
+                <input type="text" class="form-control" id="new-comment-nickname"/>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">댓글 내용</label>
+                <textarea type="text" class="form-control" rows="3" id="new-comment-body"></textarea>
+            </div>
+            {{#article}}
+                <input type="hidden" id="new-comment-article-id" value="{{id}}">
+            {{/article}}
+            <button type="button" id="comment-create-btn" class="btn btn-primary">댓글 작성</button>
+        </form>
+    </div>
+</div>
+<script>
+    {
+        const commentCreateBtn = document.querySelector("#comment-create-btn");
+        commentCreateBtn.addEventListener("click", function(){
+            const comment = {
+                nickname: document.querySelector("#new-comment-nickname").value,
+                body: document.querySelector("#new-comment-body").value,
+                articleId: document.querySelector("#new-comment-article-id").value
+            };
+            console.log(comment);
+            const url = "/api/articles/" + comment.articleId + "/comments";
+            fetch(url, {
+               method: "POST",
+               headers : {
+                    "Content-Type": "application/json"
+               },
+                body: JSON.stringify(comment)
+            }).then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    alert("댓글 등록 실패..!");
+                    throw new Error("댓글 등록 실패");
+                }
+            }).then(newComment => {
+                // 댓글 목록에 새 댓글을 추가합니다.
+                const commentsList = document.querySelector("#comments-list");
+                const commentDiv = document.createElement("div");
+                commentDiv.className = "card m-2";
+                commentDiv.id = "comments-{{id}}";
+                commentDiv.innerHTML = `
+                    <div class="card-header">
+                        ${newComment.nickname}
+                    </div>
+                    <div class="card-body">
+                        ${newComment.body}
+                    </div>
+            `;
+                commentsList.prepend(commentDiv); // 새 댓글을 목록의 맨 위에 추가합니다.
+
+                // 입력 필드 초기화
+                document.querySelector("#new-comment-nickname").value = "";
+                document.querySelector("#new-comment-body").value = "";
+                alert("댓글이 등록됐습니다.");
+            }).catch(error => console.error("Error:", error));
+        });
+    }
+</script>

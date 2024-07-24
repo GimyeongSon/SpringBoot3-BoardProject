@@ -25,6 +25,7 @@ public class CommentApiController {
     @PostMapping("/api/articles/{articleId}/comments")
     public ResponseEntity<CommentDto> create(@PathVariable Long articleId,
                                              @RequestBody CommentDto dto){
+        log.info("articleId: {}, dto: {}", articleId, dto);
         CommentDto createdDto = commentService.create(articleId, dto);
         return ResponseEntity.status(HttpStatus.OK).body(createdDto);
     }
